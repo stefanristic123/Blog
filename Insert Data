@@ -1,0 +1,12 @@
+
+
+    INSERT INTO AspNetUserRoles
+   ([UserId], [RoleId])
+VALUES
+   (5,1),
+   (6,1),
+   (7,1),
+   (8,2),
+   (9,2),
+   (10,3)
+GO
