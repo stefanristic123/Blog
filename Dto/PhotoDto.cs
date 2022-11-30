@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blog.Models
+namespace Blog.Dto
 {
-    public class Photo
+    public class PhotoDto
     {
         public int Id { get; set; }
         public string Url { get; set; }

@@ -16,7 +16,8 @@ namespace Blog.Helper
             CreateMap<WriterDto, Writer>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
-
+            CreateMap<Photo, PhotoDto>();
+            CreateMap<PhotoDto, Photo>();  
         }
     }
 }

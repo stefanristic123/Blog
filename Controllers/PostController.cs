@@ -124,12 +124,10 @@ namespace Blog.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Photo>> AddPhoto(IFormFile file)
+        [HttpPost("{postId}")]
+        public async Task<ActionResult<PhotoDto>> AddPhoto(int postId, IFormFile file)
         {
-            // var post = _mapper.Map<PostDto>(_postRepository.GetPost(1));
-
-            // if (post == null) return NotFound();
+            var post = _mapper.Map<Post>(_postRepository.GetPost(postId));
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -141,16 +139,61 @@ namespace Blog.Controllers
                 PublicId = result.PublicId
             };
 
-            return photo; 
+            if (post.Photos.Count == 0) photo.IsMain = true;
 
-            // if (post.Photos.Count == 0) photo.IsMain = true;
+            post.Photos.Add(photo);
 
-            // post.Photos.Add(photo);
-
-            // if (await _postRepository.SaveAllAsync())  return _mapper.Map<Photo>(photo);
+            if (await _postRepository.SaveAllAsync()){
+                return _mapper.Map<PhotoDto>(photo); 
+            }  
             
-            // return BadRequest("Problem");
+                return BadRequest("Problem uploading photo");
+        }
 
+        [HttpPut("set-main-photo/{postId}")]
+        public async Task<ActionResult> SetMainPhoto(int postId) 
+        {
+            var post = _mapper.Map<Post>(_postRepository.GetPost(postId));
+
+            if (post == null) return NotFound();
+
+            var photo = post.Photos.FirstOrDefault(x => x.Id == postId);
+
+            if (photo == null) return NotFound();
+
+            if (photo.IsMain) return BadRequest("this is already your main photo");
+
+            var currentMain = post.Photos.FirstOrDefault(x => x.IsMain);
+            if (currentMain != null) currentMain.IsMain = false;
+            photo.IsMain = true;
+
+            if (await _postRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Problem setting the main photo");
+        }
+
+         [HttpDelete("delete-photo/{postId}/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(int photoId, int postId)
+        {
+            var post = _mapper.Map<Post>(_postRepository.GetPost(postId));
+
+            var photo = post.Photos.FirstOrDefault(x => x.Id == photoId);
+
+            if (photo == null) return NotFound();
+
+            if (photo.IsMain) return BadRequest("You cannot delete your main photo");
+
+            if (photo.PublicId != null)
+            {
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+                if (result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            post.Photos.Remove(photo);
+
+            if (await _postRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Problem deleting photo");
         }
     }
 
