@@ -10,3 +10,18 @@ VALUES
    (9,2),
    (10,3)
 GO
+
+
+5	member1
+6	member2
+7	member3
+8	moderator1
+9	moderator2
+10	admin
+11	testmember
+
+
+1	Member
+2	Admin
+3	Moderator
+

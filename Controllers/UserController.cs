@@ -19,21 +19,18 @@ namespace Blog.Controllers
     public class UserController : Controller
     {
         private readonly IPostRepository _postRepository;
-        private readonly IWriterRepository _writerRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public UserController(
             IPostRepository postRepository,
-            IWriterRepository writerRepository,
             ICategoryRepository categoryRepository,
             IUserRepository userRepository,
             IMapper mapper
             )
         {
             _postRepository = postRepository;
-            _writerRepository = writerRepository;
             _categoryRepository = categoryRepository;
             _userRepository = userRepository;
             _mapper = mapper;

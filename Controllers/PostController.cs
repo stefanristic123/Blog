@@ -17,23 +17,23 @@ namespace Blog.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        private readonly IWriterRepository _writerRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
 
         public PostController(
             IPostRepository postRepository,
-            IWriterRepository writerRepository,
             ICategoryRepository categoryRepository,
+            IUserRepository userRepository,
             IPhotoService photoService,
             IMapper mapper
             )
         {
             _photoService = photoService;
             _postRepository = postRepository;
-            _writerRepository = writerRepository;
             _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -69,7 +69,7 @@ namespace Blog.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreatePost(
-            [FromQuery] int writerId,
+            [FromQuery] int userId,
             [FromQuery] int categoryId,
             [FromBody] PostDto postCreate
             )
@@ -89,16 +89,33 @@ namespace Blog.Controllers
 
             var map = _mapper.Map<Post>(postCreate);
 
-            map.Writer = _writerRepository.GetWriter(writerId);
-            //x.Category = _categoryRepository.GetCategory(categoryId);
+            // map.Writer = _writerRepository.GetWriter(writerId);
+            // //x.Category = _categoryRepository.GetCategory(categoryId);
 
-            if (!_postRepository.CreatePost(categoryId, map))
-            {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
-            }
+            // if (!_postRepository.CreatePost(categoryId, map))
+            // {
+            //     ModelState.AddModelError("", "Something went wrong while saving");
+            //     return StatusCode(500, ModelState);
+            // }
 
+            // return Ok("Successfully created");
+
+            var user = _userRepository.GetUser(userId);
+            var userRole = user.UserRoles?.First().RoleId;
+            if (userRole == 2){
+                map.User = user;
+                if (!_postRepository.CreatePost(categoryId, map))
+                {
+                    ModelState.AddModelError("", "Something went wrong while saving");
+                    return StatusCode(500, ModelState);
+                }
+                
             return Ok("Successfully created");
+            } else {
+                ModelState.AddModelError("", "You are not authorized"); 
+                return StatusCode(401, ModelState);
+            }
+            
         }
 
         [HttpPut("{postId}")]

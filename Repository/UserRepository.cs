@@ -2,6 +2,7 @@
 using Blog.Data;
 using Blog.Interfaces;
 using Blog.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Repository
 {
@@ -34,7 +35,7 @@ namespace Blog.Repository
 
         public User GetUser(int id)
         {
-            return _context.Users.Where(p => p.Id == id).FirstOrDefault();
+            return _context.Users.Where(p => p.Id == id).Include(x => x.UserRoles ).FirstOrDefault();
         }
 
         public bool Save()

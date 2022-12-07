@@ -12,14 +12,12 @@ namespace Blog.Repository
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly IWriterRepository _writerRepository;
         private readonly IPhotoService _photoService;
 
-        public PostRepository(DataContext context, IMapper mapper,IWriterRepository writerRepository, IPhotoService photoService)
+        public PostRepository(DataContext context, IMapper mapper, IPhotoService photoService)
         {
             _context = context;
             _mapper = mapper;
-            _writerRepository = writerRepository;
             _photoService = photoService;
         }
 
@@ -43,12 +41,12 @@ namespace Blog.Repository
 
         public Post GetPost(int id)
         {
-            return _context.Posts.Where(p => p.Id == id).Include(e =>  e.Writer).FirstOrDefault();
+            return _context.Posts.Where(p => p.Id == id).FirstOrDefault();
         }
 
         public ICollection<Post> GetPosts()
         {
-            return _context.Posts.OrderBy(p => p.Id).Include(e => e.Writer).ToList();
+            return _context.Posts.OrderBy(p => p.Id).Include(x => x.User ).ToList();
         }
 
         public Post GetPostTrimToUpper(PostDto postCreate)

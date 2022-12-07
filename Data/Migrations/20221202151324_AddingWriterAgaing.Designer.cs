@@ -4,6 +4,7 @@ using Blog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221202151324_AddingWriterAgaing")]
+    partial class AddingWriterAgaing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -405,15 +408,15 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.Post", b =>
                 {
-                    b.HasOne("Blog.Models.User", "User")
+                    b.HasOne("Blog.Models.User", null)
                         .WithMany("Posts")
                         .HasForeignKey("UserId");
 
-                    b.HasOne("Blog.Models.Writer", null)
+                    b.HasOne("Blog.Models.Writer", "Writer")
                         .WithMany("Posts")
                         .HasForeignKey("WriterId");
 
-                    b.Navigation("User");
+                    b.Navigation("Writer");
                 });
 
             modelBuilder.Entity("Blog.Models.PostCategory", b =>

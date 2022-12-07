@@ -15,21 +15,18 @@ namespace Blog.Controllers
     public class CategoryController : Controller
     {
         private readonly IPostRepository _postRepository;
-        private readonly IWriterRepository _writerRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
 
         public CategoryController(
             IPostRepository postRepository,
-            IWriterRepository writerRepository,
             ICategoryRepository categoryRepository,
             ICommentRepository commentRepository,
             IMapper mapper
             )
         {
             _postRepository = postRepository;
-            _writerRepository = writerRepository;
             _categoryRepository = categoryRepository;
             _commentRepository = commentRepository;
             _mapper = mapper;

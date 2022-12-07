@@ -1,4 +1,6 @@
 ﻿using System;
+using Blog.Dto;
+
 namespace Blog.Models
 {
     public class Post
@@ -8,8 +10,8 @@ namespace Blog.Models
         public string? Title { get; set; }
 
         public string? Description { get; set; }
-
-        public virtual Writer? Writer { get; set; }
+        
+        public virtual User? User { get; set; }
 
         public virtual ICollection<Comment>? Comments { get; set; }
 

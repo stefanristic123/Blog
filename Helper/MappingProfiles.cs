@@ -12,8 +12,10 @@ namespace Blog.Helper
         {
             CreateMap<Post, PostDto>();
             CreateMap<PostDto, Post>();
-            CreateMap<Writer, WriterDto>();
-            CreateMap<WriterDto, Writer>();
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
+            CreateMap<User, UserPostDto>();
+            CreateMap<UserPostDto, User>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
             CreateMap<Photo, PhotoDto>();
