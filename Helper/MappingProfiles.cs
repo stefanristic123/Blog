@@ -19,7 +19,9 @@ namespace Blog.Helper
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
             CreateMap<Photo, PhotoDto>();
-            CreateMap<PhotoDto, Photo>();  
+            CreateMap<PhotoDto, Photo>(); 
+            CreateMap<Like, LikeDto>();
+            CreateMap<LikeDto, Like>();   
         }
     }
 }

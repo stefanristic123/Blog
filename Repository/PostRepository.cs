@@ -54,6 +54,12 @@ namespace Blog.Repository
             return GetPosts().Where(c => c.Title.Trim().ToUpper() == postCreate.Title.TrimEnd().ToUpper()).FirstOrDefault();
         }
 
+        public bool LikePost(Like like)
+        {
+            _context.Add(like);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

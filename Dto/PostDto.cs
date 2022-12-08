@@ -10,15 +10,10 @@ namespace Blog.Dto
         public string? Title { get; set; }
 
         public string? Description { get; set; }
-
-        public WriterDto?  Writer { get; set; }
-
-        public User? User { get; set; }
-        
+        public UserDto? User { get; set; }
         public virtual ICollection<Comment>? Comments { get; set; } 
-
         public virtual ICollection<Photo>? Photos { get; set; } 
-
+        public virtual ICollection<LikeDto>? Likes { get; set; } 
     }
 }
 

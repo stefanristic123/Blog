@@ -141,6 +141,35 @@ namespace Blog.Controllers
             return NoContent();
         }
 
+        [HttpPost("like/{postId}")]
+        public async Task<ActionResult> LikePost(
+            [FromQuery] int userId,
+            [FromQuery] int postId,
+            [FromBody] Like likePost
+        ) 
+        {
+            if (likePost == null)
+                return BadRequest(ModelState);
+
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var map = _mapper.Map<Like>(likePost);
+
+            map.User = _userRepository.GetUser(userId);
+            map.Post = _postRepository.GetPost(postId);
+
+            if (!_postRepository.LikePost(map))
+            {
+                ModelState.AddModelError("", "Something went wrong while trying to like the post");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully liked");
+
+        }
+
         [HttpPost("{postId}")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(int postId, IFormFile file)
         {

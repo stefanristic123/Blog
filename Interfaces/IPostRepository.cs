@@ -15,6 +15,7 @@ namespace Blog.Interfaces
         Post GetPostTrimToUpper(PostDto PostCreate);
 
         bool UpdatePost(Post post);
+        bool LikePost(Like like);
         bool Save();
 
         Task<bool> SaveAllAsync();
